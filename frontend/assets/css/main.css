@@ -1,8 +1,8 @@
 /* ============================================================
-   EWU NotesHub — Design System
-   Dark: deep navy  #0D1117 bg  |  Light: soft white #F0F4F8
-   Accent: Electric Blue #3B82F6  |  Pop: Cyan #06B6D4
-   Font: Funnel Display (variable)
+   EWU NotesHub — Design Structure
+   Dark: #0D1117 bg  |  Light: #F0F4F8
+   Accent: #3B82F6  |  #06B6D4
+   Font: Funnel Display
    ============================================================ */
 
 @font-face {
@@ -13,7 +13,7 @@
   font-display: swap;
 }
 
-/* ── Variables ───────────────────────────────────────────── */
+/* variables*/
 :root {
   /* Light mode (default) */
   --bg:           #F0F4F8;
@@ -104,7 +104,6 @@
   --shadow-blue: 0 4px 20px rgba(59,130,246,0.3);
 }
 
-/* ── Reset ───────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; scroll-behavior: smooth; }
 body {
@@ -118,13 +117,11 @@ body {
   transition: background var(--t-slow), color var(--t-slow);
 }
 
-/* Light mode: subtle dot grid */
 body:not([data-theme="dark"]) {
   background-image: radial-gradient(circle, rgba(59,130,246,0.06) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
-/* Dark mode: subtle dot grid */
 [data-theme="dark"] body,
 [data-theme="dark"] {
   background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
@@ -138,7 +135,6 @@ ul, ol { list-style: none; }
 button { cursor: pointer; font-family: 'Funnel', sans-serif; border: none; background: none; }
 input, select, textarea { font-family: 'Funnel', sans-serif; }
 
-/* ── Typography ──────────────────────────────────────────── */
 .t-h1    { font-size: clamp(1.8rem, 4vw, 3rem);   font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; }
 .t-h2    { font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
 .t-h3    { font-size: 1.15rem; font-weight: 600; line-height: 1.3; }
@@ -151,13 +147,12 @@ input, select, textarea { font-family: 'Funnel', sans-serif; }
 .t-cyan   { color: var(--cyan); }
 .t-green  { color: var(--green); }
 
-/* ── Layout ──────────────────────────────────────────────── */
 .wrap    { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
 .wrap-sm { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
 .section { padding: 5rem 0; }
 .section-sm { padding: 3rem 0; }
 
-/* ── Navbar ──────────────────────────────────────────────── */
+/*navbar*/
 .navbar {
   position: sticky; top: 0; z-index: 200;
   padding: 0.8rem 0;
@@ -230,7 +225,6 @@ input, select, textarea { font-family: 'Funnel', sans-serif; }
 }
 .nav-signin:hover { background: var(--blue-dark); transform: translateY(-1px); }
 
-/* User pill */
 .nav-user-pill {
   display: flex; align-items: center; gap: 0.45rem;
   padding: 0.28rem 0.75rem 0.28rem 0.28rem;
@@ -246,7 +240,6 @@ input, select, textarea { font-family: 'Funnel', sans-serif; }
   font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
 }
 
-/* Hamburger */
 .hamburger {
   display: none; flex-direction: column; gap: 4px;
   padding: 0.4rem; border-radius: var(--r-sm);
@@ -254,7 +247,6 @@ input, select, textarea { font-family: 'Funnel', sans-serif; }
 }
 .hamburger span { display: block; width: 17px; height: 1.5px; background: var(--fg); border-radius: 1px; transition: all var(--t); }
 
-/* ── Buttons ─────────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
   padding: 0.62rem 1.4rem; border-radius: var(--r-pill);
@@ -262,27 +254,23 @@ input, select, textarea { font-family: 'Funnel', sans-serif; }
   transition: all var(--t); white-space: nowrap; cursor: pointer; border: none; line-height: 1;
 }
 
-/* Primary — solid blue */
 .btn-primary {
   background: var(--blue); color: #fff;
   box-shadow: var(--shadow-blue);
 }
 .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(59,130,246,0.35); }
 
-/* Secondary — cyan pop */
 .btn-secondary {
   background: var(--cyan); color: #fff;
   box-shadow: 0 4px 16px rgba(6,182,212,0.3);
 }
 .btn-secondary:hover { opacity: 0.9; transform: translateY(-1px); }
 
-/* Solid dark */
 .btn-solid {
   background: var(--fg); color: var(--bg);
 }
 .btn-solid:hover { opacity: 0.85; transform: translateY(-1px); }
 
-/* Outline */
 .btn-outline {
   background: transparent;
   border: 1.5px solid var(--card-border);
@@ -290,11 +278,9 @@ input, select, textarea { font-family: 'Funnel', sans-serif; }
 }
 .btn-outline:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
 
-/* Ghost */
 .btn-ghost { color: var(--muted); }
 .btn-ghost:hover { color: var(--fg); background: var(--card); }
 
-/* Danger */
 .btn-danger {
   background: var(--red-dim); color: var(--red);
   border: 1px solid rgba(239,68,68,0.2);
@@ -306,7 +292,6 @@ input, select, textarea { font-family: 'Funnel', sans-serif; }
 .btn-full { width: 100%; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
 
-/* ── Cards ───────────────────────────────────────────────── */
 .card {
   background: var(--card);
   border: 1px solid var(--card-border);
@@ -323,7 +308,7 @@ input, select, textarea { font-family: 'Funnel', sans-serif; }
   padding: 1.5rem;
   box-shadow: var(--shadow-sm);
 }
-/* Glass card */
+
 .card-glass {
   background: rgba(var(--bg-rgb), 0.7);
   backdrop-filter: var(--blur-sm);
@@ -333,7 +318,6 @@ input, select, textarea { font-family: 'Funnel', sans-serif; }
   padding: 1.5rem;
 }
 
-/* ── Form Controls ───────────────────────────────────────── */
 .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
 .form-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
 .form-control {
@@ -358,7 +342,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 .form-error { font-size: 0.8rem; color: var(--red); display: none; }
 .form-error.show { display: block; }
 
-/* ── Upload Zone ─────────────────────────────────────────── */
 .upload-zone {
   border: 2px dashed var(--card-border);
   border-radius: var(--r-xl);
@@ -375,7 +358,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 .upload-zone-text { font-size: 0.9rem; color: var(--muted); }
 .upload-zone-text strong { color: var(--blue); font-weight: 600; }
 
-/* ── Badges ──────────────────────────────────────────────── */
 .badge {
   display: inline-flex; align-items: center; gap: 0.25rem;
   padding: 0.22rem 0.65rem; border-radius: var(--r-pill);
@@ -386,7 +368,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 .badge-green  { background: var(--green-dim); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
 .badge-neutral{ background: var(--card);      color: var(--muted); border: 1px solid var(--card-border); }
 
-/* File type badges */
 .ext { display: inline-block; padding: 0.15rem 0.45rem; border-radius: var(--r-sm); font-size: 0.67rem; font-weight: 700; text-transform: uppercase; }
 .ext-pdf  { background: rgba(239,68,68,0.12);   color: #EF4444; }
 .ext-doc  { background: rgba(59,130,246,0.12);  color: #3B82F6; }
@@ -397,7 +378,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 .ext-code { background: rgba(59,130,246,0.12);  color: #3B82F6; }
 .ext-def  { background: var(--card);             color: var(--muted); }
 
-/* ── Toast ───────────────────────────────────────────────── */
 #toast-rack {
   position: fixed; bottom: 1.5rem; right: 1.5rem;
   display: flex; flex-direction: column; gap: 0.5rem;
@@ -421,7 +401,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 @keyframes toast-in  { from { opacity:0; transform: translateX(16px) scale(0.96); } to { opacity:1; transform: none; } }
 @keyframes toast-out { from { opacity:1; } to { opacity:0; transform: translateX(16px); } }
 
-/* ── Modal ───────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 500;
   background: rgba(13,17,23,0.6);
@@ -453,7 +432,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 }
 .modal-close:hover { color: var(--red); border-color: rgba(239,68,68,0.3); }
 
-/* ── Tab Switcher ────────────────────────────────────────── */
 .tab-bar {
   display: flex; background: var(--bg); border: 1px solid var(--card-border);
   border-radius: var(--r-pill); padding: 0.2rem; gap: 0.2rem;
@@ -466,7 +444,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 .tab-btn.active { background: var(--blue); color: #fff; box-shadow: var(--shadow-blue); }
 .tab-btn:not(.active):hover { color: var(--fg); background: var(--card); }
 
-/* ── Notice Banner ───────────────────────────────────────── */
 .notice {
   display: flex; align-items: center; gap: 0.75rem;
   background: var(--blue-dim); border: 1px solid var(--blue-mid);
@@ -475,7 +452,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 .notice-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
 .notice-close { margin-left: auto; color: var(--muted); }
 
-/* ── Page Header ─────────────────────────────────────────── */
 .page-header {
   padding: 2.5rem 0 2rem;
   border-bottom: 1px solid var(--card-border);
@@ -488,7 +464,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 .breadcrumb a:hover { color: var(--blue); opacity: 1; }
 .breadcrumb-sep { color: var(--muted-2); }
 
-/* ── Note Item ───────────────────────────────────────────── */
 .note-item {
   display: flex; align-items: flex-start; gap: 0.9rem;
   padding: 0.9rem 1rem;
@@ -507,7 +482,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 .note-meta  { font-size: 0.76rem; color: var(--muted); margin-top: 0.2rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
 .note-actions { display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0; }
 
-/* ── Stat cards ──────────────────────────────────────────── */
 .stat-card {
   background: var(--card); border: 1px solid var(--card-border);
   border-radius: var(--r-xl); padding: 1.25rem 1.5rem;
@@ -515,7 +489,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
 .stat-val { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
 .stat-lbl { font-size: 0.72rem; color: var(--muted); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.35rem; }
 
-/* ── Selection list ──────────────────────────────────────── */
 .sel-item {
   display: flex; align-items: center; justify-content: space-between; gap: 0.65rem;
   padding: 0.6rem 0.85rem;
@@ -801,7 +774,6 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   .stats-cell:last-child { border-bottom: none; }
 }
 
-/* ── Mobile drawer ───────────────────────────────────────── */
 .mobile-drawer {
   position: fixed; inset: 0; z-index: 300;
   background: var(--card);

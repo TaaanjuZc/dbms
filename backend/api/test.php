@@ -1,5 +1,5 @@
 <?php
-// ── Quick connection test ─────────────────────────────────
+// Test Drive
 // Visit: http://localhost/notown/backend/api/test.php
 // Delete this file before going to production!
 header('Content-Type: application/json');

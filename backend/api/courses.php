@@ -1,7 +1,6 @@
 <?php
-// ============================================================
 //  api/courses.php  —  List departments & courses
-// ============================================================
+
 require_once __DIR__ . '/config.php';
 
 $action = $_GET['action'] ?? 'departments';

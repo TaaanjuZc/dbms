@@ -1,7 +1,6 @@
 <?php
-// ============================================================
 //  backend/api/notes.php — No views, direct JOINs
-// ============================================================
+
 require_once __DIR__ . '/config.php';
 
 $action = $_GET['action'] ?? 'list';
@@ -16,7 +15,7 @@ switch ($action) {
   default:             err('Unknown action.');
 }
 
-// ── Shared query fragment ────────────────────────────────────
+// Shared query fragment
 function notes_select(): string {
   return '
     SELECT
@@ -33,7 +32,7 @@ function notes_select(): string {
     WHERE n.is_approved = 1';
 }
 
-// ── Upload ───────────────────────────────────────────────────
+// Upload 
 function handle_upload(): void {
   $user = require_auth();
 
@@ -83,7 +82,7 @@ function handle_upload(): void {
   ok(['note_id' => (int)db()->lastInsertId(), 'message' => 'Notes uploaded successfully!']);
 }
 
-// ── List ─────────────────────────────────────────────────────
+// List
 function handle_list(): void {
   $dept_id   = (int)($_GET['dept_id']   ?? 0);
   $course_id = (int)($_GET['course_id'] ?? 0);
@@ -115,7 +114,7 @@ function handle_list(): void {
   ok(['notes' => $st->fetchAll(), 'total' => $total]);
 }
 
-// ── Download single → ZIP ────────────────────────────────────
+// Download single zip folder
 function handle_download(): void {
   sess();
 
@@ -174,7 +173,7 @@ function handle_download(): void {
   exit;
 }
 
-// ── Download multiple courses → single ZIP ───────────────────
+// Download multiple courses
 function handle_download_zip(): void {
   sess();
 
@@ -270,7 +269,7 @@ function handle_download_zip(): void {
   exit;
 }
 
-// ── Delete ───────────────────────────────────────────────────
+// Delete
 function handle_delete(): void {
   $user    = require_auth();
   $note_id = (int)($_GET['note_id'] ?? 0);
@@ -289,7 +288,7 @@ function handle_delete(): void {
   ok(['message' => 'Note deleted.']);
 }
 
-// ── User notes / downloads ───────────────────────────────────
+// User notes/downloads
 function handle_user_notes(): void {
   $user = require_auth();
   $type = $_GET['type'] ?? 'uploads';

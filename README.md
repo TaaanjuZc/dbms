@@ -1,6 +1,6 @@
-# notown
+# EWU NotesHub 
 
-> **your notes. your community.**
+> **East West University — academic notes, shared freely..**
 > A minimal academic notes-sharing platform — dark/light mode, glass UI, ZIP downloads.
 
 ---

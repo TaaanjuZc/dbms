@@ -1,6 +1,3 @@
--- ============================================================
---  notown — Database Schema (InfinityFree / No Views)
--- ============================================================
 
 SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_MODE = '';
@@ -134,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `complaints` (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- ── Seed data ────────────────────────────────────────────────
+-- ── Seed data 
 INSERT IGNORE INTO `departments` (`name`, `code`) VALUES
   ('Computer Science & Engineering',      'CSE'),
   ('Electrical & Electronic Engineering', 'EEE'),

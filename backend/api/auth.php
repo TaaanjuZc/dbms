@@ -1,7 +1,6 @@
 <?php
-// ============================================================
 //  api/auth.php  —  Register / Login / Logout / Me
-// ============================================================
+
 require_once __DIR__ . '/config.php';
 sess();
 
@@ -15,7 +14,6 @@ switch ($action) {
   default:         err('Unknown action.');
 }
 
-// ────────────────────────────────────────────────────────────
 function handle_register(): void {
   $body = json_decode(file_get_contents('php://input'), true) ?? $_POST;
 
@@ -50,7 +48,6 @@ function handle_register(): void {
   ok(['user' => $user, 'message' => 'Account created successfully.']);
 }
 
-// ────────────────────────────────────────────────────────────
 function handle_login(): void {
   $body = json_decode(file_get_contents('php://input'), true) ?? $_POST;
 
@@ -78,14 +75,12 @@ function handle_login(): void {
   ok(['user' => $row, 'message' => 'Logged in successfully.']);
 }
 
-// ────────────────────────────────────────────────────────────
 function handle_logout(): void {
   $_SESSION = [];
   session_destroy();
   ok(['message' => 'Logged out.']);
 }
 
-// ────────────────────────────────────────────────────────────
 function handle_me(): void {
   if (empty($_SESSION['user'])) {
     ok(['user' => null]);

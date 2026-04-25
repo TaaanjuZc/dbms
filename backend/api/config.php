@@ -1,7 +1,5 @@
 <?php
-// ============================================================
 //  backend/api/config.php
-// ============================================================
 
 define('DB_HOST',    'localhost');
 define('DB_PORT',    3306);
@@ -30,7 +28,6 @@ define('ALLOWED_MIME', [
   'application/x-ipynb+json',
 ]);
 
-// ── CORS — must run before anything else ─────────────────
 $allowed_origins = [
   'http://localhost',
   'http://localhost:5173',
@@ -40,9 +37,6 @@ $allowed_origins = [
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
-// Allow same-origin XAMPP requests (no Origin header sent)
-// Allow Vite dev server
-// Allow production hosting
 if (empty($origin) || in_array($origin, $allowed_origins) || str_contains($origin, 'infinityfreeapp.com') || str_contains($origin, 'xo.je')) {
   $send_origin = empty($origin) ? '*' : $origin;
 } else {
@@ -60,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   exit;
 }
 
-// ── PDO singleton ─────────────────────────────────────────
 function db(): PDO {
   static $pdo = null;
   if ($pdo === null) {
@@ -83,7 +76,6 @@ function db(): PDO {
   return $pdo;
 }
 
-// ── Response helpers ──────────────────────────────────────
 function ok(array $d = []): void {
   echo json_encode(array_merge(['success' => true], $d));
   exit;
@@ -105,7 +97,6 @@ function require_auth(): array {
 
 function sess(): void {
   if (session_status() === PHP_SESSION_NONE) {
-    // Make sessions work across frontend/backend on same localhost
     session_set_cookie_params([
       'lifetime' => 86400 * 7,  // 7 days
       'path'     => '/',
