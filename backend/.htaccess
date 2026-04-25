@@ -1,0 +1,28 @@
+Options -Indexes
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^uploads/ - [F,L]
+  RewriteRule ^api/config\.php$ - [F,L]
+</IfModule>
+
+<IfModule mod_php.c>
+  php_value upload_max_filesize 100M
+  php_value post_max_size       105M
+  php_value max_execution_time  120
+  php_value memory_limit        256M
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css               "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType image/png              "access plus 1 month"
+  ExpiresByType image/jpeg             "access plus 1 month"
+</IfModule>

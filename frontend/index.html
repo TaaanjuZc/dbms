@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EWU NotesHub — East West University — academic notes, shared freely.</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* ── Homepage extras ── */
+    .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 2.5rem; }
+    .step-card {
+      background: var(--surface); border: 1px solid var(--surface-border);
+      border-radius: var(--r-xl); padding: 1.5rem;
+    }
+    .step-num {
+      width: 32px; height: 32px; border-radius: var(--r);
+      background: var(--purple-dim); border: 1px solid rgba(85,75,249,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: var(--purple);
+      margin-bottom: 1rem;
+    }
+    .stats-row {
+      display: flex; align-items: center; gap: 0;
+      background: var(--surface); border: 1px solid var(--surface-border);
+      border-radius: var(--r-2xl); overflow: hidden;
+      margin: 2rem auto; max-width: 560px;
+    }
+    .stats-cell {
+      flex: 1; text-align: center; padding: 1.25rem 1rem;
+      border-right: 1px solid var(--surface-border);
+    }
+    .stats-cell:last-child { border-right: none; }
+    .stats-cell .val { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .stats-cell .lbl { font-size: 0.72rem; color: var(--muted); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    @media(max-width:640px) {
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ──────────────────────────────────────────── -->
+<header class="navbar">
+  <div class="wrap">
+    <nav class="nav-inner">
+      <a href="index.html" class="nav-logo"><div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><span class="nav-logo-text"><span class="ewu">EWU</span> <span class="notes">Notes</span><span class="hub">Hub</span></span></a>
+      <div class="nav-links">
+        <a href="index.html"     class="nav-link active">Home</a>
+        <a href="upload.html"    class="nav-link">Contribute</a>
+        <a href="download.html"  class="nav-link">Explore</a>
+        <a href="reviews.html"   class="nav-link">Community</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+      </div>
+      <div class="nav-right">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></button>
+        <button class="nav-signin" id="nav-login" onclick="location.href='auth.html'">Sign in</button>
+        <div id="nav-user" style="display:none;align-items:center;gap:0.5rem">
+          <a href="dashboard.html" class="nav-user-pill">
+            <div class="nav-avatar" id="nav-avatar">U</div>
+            <span id="nav-username" style="font-size:0.875rem;font-weight:600"></span>
+          </a>
+          <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
+        </div>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+<nav class="mobile-drawer" id="mobile-drawer">
+  <button class="mobile-drawer-close" id="drawer-close"></button>
+  <a href="index.html"     class="mobile-link active">Home</a>
+  <a href="upload.html"    class="mobile-link">Contribute</a>
+  <a href="download.html"  class="mobile-link">Explore</a>
+  <a href="reviews.html"   class="mobile-link">Community</a>
+  <a href="dashboard.html" class="mobile-link">Dashboard</a>
+  <hr style="border:none;border-top:1px solid var(--surface-border);margin:0.5rem 0">
+  <a href="auth.html" class="mobile-link">Sign In / Register</a>
+</nav>
+
+<!-- ── Notice ─────────────────────────────────────────── -->
+<div style="background:rgba(var(--bg-rgb),0.5);border-bottom:1px solid var(--surface-border)" id="notice-wrap">
+  <div class="wrap" style="padding-top:0.6rem;padding-bottom:0.6rem">
+    <div class="notice">
+      <span class="notice-dot"></span>
+      <span class="t-small"><strong>Under construction</strong> — notown is actively being built. New features and content are added regularly.</span>
+      <button class="notice-close btn btn-ghost" style="padding:0.2rem" onclick="document.getElementById('notice-wrap').remove()">
+        <span style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center" id="x-icon"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Hero ───────────────────────────────────────────── -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-wordmark anim-fade-up">
+      <span class="ewu">EWU</span> <span class="notes">Notes</span><span class="hub">Hub</span>
+    </div>
+    <p class="hero-tagline anim-fade-up" style="animation-delay:0.1s">East West University — academic notes, shared freely.</p>
+    <div class="hero-actions anim-fade-up" style="animation-delay:0.2s">
+      <a href="upload.html" class="btn btn-lime btn-lg">Contribute notes</a>
+      <a href="download.html" class="btn btn-outline btn-lg">Explore archive</a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row anim-fade-up" style="animation-delay:0.3s">
+      <div class="stats-cell"><div class="val" id="s-depts">8</div><div class="lbl">Departments</div></div>
+      <div class="stats-cell"><div class="val" id="s-courses">27</div><div class="lbl">Courses</div></div>
+      <div class="stats-cell"><div class="val" id="s-notes">—</div><div class="lbl">Notes</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Departments ─────────────────────────────────────── -->
+<section class="section-sm">
+  <div class="wrap">
+    <p class="section-label">Departments</p>
+    <div class="dept-grid" id="dept-grid">
+      <!-- loaded by JS -->
+      <div class="dept-card" style="opacity:0.4"><div style="width:100%;height:60px;background:var(--surface-border);border-radius:var(--r)"></div></div>
+      <div class="dept-card" style="opacity:0.4"><div style="width:100%;height:60px;background:var(--surface-border);border-radius:var(--r)"></div></div>
+      <div class="dept-card" style="opacity:0.2"><div style="width:100%;height:60px;background:var(--surface-border);border-radius:var(--r)"></div></div>
+      <div class="dept-card" style="opacity:0.15"><div style="width:100%;height:60px;background:var(--surface-border);border-radius:var(--r)"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How it works ────────────────────────────────────── -->
+<section class="section-sm" style="padding-bottom:5rem">
+  <div class="wrap">
+    <p class="section-label">How it works</p>
+    <div class="steps-grid">
+      <div class="step-card anim-fade-up" style="animation-delay:0.05s">
+        <div class="step-num">01</div>
+        <div class="t-h4" style="margin-bottom:0.4rem">Create an account</div>
+        <p class="t-small t-muted">Sign up free to unlock full access — unlimited downloads and the ability to contribute notes.</p>
+      </div>
+      <div class="step-card anim-fade-up" style="animation-delay:0.1s">
+        <div class="step-num">02</div>
+        <div class="t-h4" style="margin-bottom:0.4rem">Find your course</div>
+        <p class="t-small t-muted">Browse by department and course. Filter notes by semester, faculty, or file type.</p>
+      </div>
+      <div class="step-card anim-fade-up" style="animation-delay:0.15s">
+        <div class="step-num">03</div>
+        <div class="t-h4" style="margin-bottom:0.4rem">Download as ZIP</div>
+        <p class="t-small t-muted">Select multiple courses and download everything in one organised ZIP archive.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ──────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <span class="footer-logo"><span class="ewu">EWU</span> <span class="notes">Notes</span><span class="hub">Hub</span></span>
+      <div style="display:flex;gap:1.5rem">
+        <a href="upload.html"   class="t-small t-muted">Contribute</a>
+        <a href="download.html" class="t-small t-muted">Explore</a>
+        <a href="reviews.html"  class="t-small t-muted">Community</a>
+      </div>
+      <span class="t-small t-muted">Built for DBMS</span>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-rack"></div>
+<script src="assets/js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // inject close icon
+    const xi = document.getElementById('x-icon');
+    if (xi) xi.innerHTML = icon('x', 14);
+
+    // load departments
+    const data = await apiGet(`${API}/courses.php?action=departments`);
+    const grid = document.getElementById('dept-grid');
+    const deptIcons = { CSE:'book', EEE:'book', BBA:'book', CE:'book', ME:'book', MATH:'book', PHY:'book', ENG:'book' };
+    if (data.departments && grid) {
+      grid.innerHTML = '';
+      data.departments.forEach((d, i) => {
+        const card = document.createElement('a');
+        card.href = `download.html?dept=${d.id}`;
+        card.className = 'dept-card anim-fade-up';
+        card.style.animationDelay = (i * 0.05) + 's';
+        card.innerHTML = `
+          <div class="dept-card-icon">${icon('book', 20)}</div>
+          <div class="dept-card-name">${d.name}</div>
+          <div class="dept-card-meta">${d.course_count || 0} courses · ${d.note_count || 0} notes</div>
+        `;
+        grid.appendChild(card);
+      });
+      document.getElementById('s-depts').textContent = data.departments.length;
+    }
+
+    // notes count
+    const n = await apiGet(`${API}/notes.php?action=list&limit=1`);
+    if (n.total !== undefined) document.getElementById('s-notes').textContent = n.total;
+  });
+</script>
+</body>
+</html>

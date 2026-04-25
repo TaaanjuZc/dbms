@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Explore — notown</title>
+  <link rel="stylesheet" href="assets/css/main.css"/>
+  <style>
+    .page-body { padding: 2rem 0 5rem; }
+    .filter-bar {
+      display: flex; align-items: flex-end; gap: 0.75rem; flex-wrap: wrap;
+      background: var(--surface); border: 1px solid var(--surface-border);
+      border-radius: var(--r-xl); padding: 1.1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .filter-bar .form-group { flex: 1; min-width: 160px; }
+    .notes-stack { display: flex; flex-direction: column; gap: 0.5rem; }
+    .sidebar-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: var(--r-xl); padding: 1.25rem; }
+    .sidebar-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .sel-count {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--lime-dim); border: 1px solid rgba(180,240,69,0.3);
+      color: color-mix(in srgb, var(--lime) 70%, #000);
+      font-size: 0.72rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .limit-banner {
+      background: rgba(224,80,80,0.08); border: 1px solid rgba(224,80,80,0.2);
+      border-radius: var(--r); padding: 0.65rem 0.9rem;
+      font-size: 0.8rem; color: #C04040; margin-top: 0.75rem; display: none;
+    }
+    .mobile-dl-fab {
+      display: none; position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 50;
+    }
+    @media(max-width:960px){ .mobile-dl-fab{ display:block; } }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap">
+    <nav class="nav-inner">
+      <a href="index.html" class="nav-logo"><div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><span class="nav-logo-text"><span class="ewu">EWU</span> <span class="notes">Notes</span><span class="hub">Hub</span></span></a>
+      <div class="nav-links">
+        <a href="index.html"     class="nav-link">Home</a>
+        <a href="upload.html"    class="nav-link">Contribute</a>
+        <a href="download.html"  class="nav-link active">Explore</a>
+        <a href="reviews.html"   class="nav-link">Community</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+      </div>
+      <div class="nav-right">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></button>
+        <button class="nav-signin" id="nav-login" onclick="location.href='auth.html?next=download.html'">Sign in</button>
+        <div id="nav-user" style="display:none;align-items:center;gap:0.5rem">
+          <a href="dashboard.html" class="nav-user-pill">
+            <div class="nav-avatar" id="nav-avatar">U</div>
+            <span id="nav-username" style="font-size:0.875rem;font-weight:600"></span>
+          </a>
+          <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
+        </div>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+<nav class="mobile-drawer" id="mobile-drawer">
+  <button class="mobile-drawer-close" id="drawer-close"></button>
+  <a href="index.html"     class="mobile-link">Home</a>
+  <a href="upload.html"    class="mobile-link">Contribute</a>
+  <a href="download.html"  class="mobile-link active">Explore</a>
+  <a href="reviews.html"   class="mobile-link">Community</a>
+  <a href="dashboard.html" class="mobile-link">Dashboard</a>
+</nav>
+
+<div class="page-header">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a><span class="breadcrumb-sep">›</span><span>Explore</span></div>
+    <h1 class="t-h1">Explore notes</h1>
+    <p class="t-body t-muted" style="margin-top:0.35rem">Browse and download academic resources by department and course.</p>
+  </div>
+</div>
+
+<!-- Limit notice for guests -->
+<div id="guest-notice" style="display:none;background:rgba(var(--bg-rgb),0.5);border-bottom:1px solid var(--surface-border)">
+  <div class="wrap" style="padding-top:0.55rem;padding-bottom:0.55rem">
+    <div class="notice">
+      <span class="notice-dot"></span>
+      <span class="t-small">Guest access: <strong>2 courses</strong> without sign-in. <a href="auth.html?mode=signup&next=download.html" style="color:var(--purple);font-weight:600">Sign up free</a> for unlimited downloads.</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap page-body">
+  <div class="dl-grid">
+    <!-- Notes panel -->
+    <div>
+      <div class="filter-bar">
+        <div class="form-group">
+          <label class="form-label">Department</label>
+          <select class="form-control" id="dl-dept"><option value="">All departments</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Course</label>
+          <select class="form-control" id="dl-course"><option value="">All courses</option></select>
+        </div>
+        <button class="btn btn-solid" id="dl-search" style="align-self:flex-end;height:44px">
+          <span id="search-icon"></span> Search
+        </button>
+      </div>
+      <div class="notes-stack" id="notes-list">
+        <div class="empty" style="padding:4rem 0">
+          <div class="empty-icon" id="search-empty-icon" style="width:40px;height:40px;margin-bottom:0.75rem"></div>
+          <p>Search by department or course to find notes</p>
+          <p class="t-small" style="margin-top:0.25rem">Or leave blank to browse all</p>
+        </div>
+      </div>
+      <div id="load-more-wrap" style="display:none;text-align:center;margin-top:1.25rem">
+        <button class="btn btn-outline" id="load-more">Load more</button>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="dl-sticky">
+      <div class="sidebar-card">
+        <div class="sidebar-card-header">
+          <span class="t-h4">Selected courses</span>
+          <span class="sel-count" id="sel-count">0</span>
+        </div>
+        <div id="sel-list" style="display:flex;flex-direction:column;gap:0.4rem">
+          <p class="t-small t-muted" style="text-align:center;padding:0.75rem 0">No courses selected.<br>Add courses from the list.</p>
+        </div>
+        <div class="limit-banner" id="limit-banner">
+          Sign in to download from more than 2 courses.
+          <a href="auth.html?mode=signup&next=download.html" style="color:#C04040;font-weight:600;display:block;margin-top:0.35rem">Create free account →</a>
+        </div>
+        <button class="btn btn-lime btn-full" id="dl-zip-btn" style="margin-top:1rem" disabled>
+          <span id="zip-icon"></span> Download as ZIP
+        </button>
+        <p class="t-small t-muted" style="text-align:center;margin-top:0.5rem" id="user-status-msg">Browse freely · Sign in for unlimited</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- Mobile FAB -->
+<button class="btn btn-lime mobile-dl-fab" id="mobile-dl-fab" style="gap:0.5rem" onclick="document.querySelector('.dl-sticky').scrollIntoView({behavior:'smooth'})">
+  <span id="fab-zip-icon"></span>
+  ZIP <span class="badge badge-lime" id="fab-count" style="font-size:0.7rem">0</span>
+</button>
+
+<!-- Login required modal -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal-box" style="text-align:center">
+    <div style="width:52px;height:52px;border-radius:50%;background:var(--purple-dim);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:var(--purple)" id="modal-lock-icon"></div>
+    <h3 class="t-h3" style="margin-bottom:0.4rem">Sign in required</h3>
+    <p class="t-small t-muted" style="margin-bottom:1.5rem">You've reached the free limit. Sign up for unlimited course downloads.</p>
+    <div style="display:flex;gap:0.75rem;justify-content:center">
+      <a href="auth.html?mode=signin&next=download.html" class="btn btn-solid">Sign in</a>
+      <a href="auth.html?mode=signup&next=download.html" class="btn btn-outline">Create account</a>
+    </div>
+    <button class="modal-close" onclick="closeModal('login-modal')" style="position:absolute;top:1.25rem;right:1.25rem" id="modal-close-btn"></button>
+  </div>
+</div>
+
+<footer class="footer"><div class="wrap"><div class="footer-inner">
+  <span class="footer-logo"><span class="ewu">EWU</span> <span class="notes">Notes</span><span class="hub">Hub</span></span>
+  <span class="t-small t-muted">Explore — Browse notes</span>
+</div></div></footer>
+
+<div id="toast-rack"></div>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/download.js"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard — notown</title>
+  <link rel="stylesheet" href="assets/css/main.css"/>
+  <style>
+    .page-body { padding: 2rem 0 5rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1.75rem; }
+    .user-card {
+      background: var(--surface); border: 1px solid var(--surface-border);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .user-card-avatar {
+      width: 58px; height: 58px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+      border: 2px solid var(--surface-border);
+    }
+    @media(max-width:768px){ .stats-grid{ grid-template-columns: 1fr 1fr; } }
+    @media(max-width:480px){ .stats-grid{ grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap">
+    <nav class="nav-inner">
+      <a href="index.html" class="nav-logo"><div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><span class="nav-logo-text"><span class="ewu">EWU</span> <span class="notes">Notes</span><span class="hub">Hub</span></span></a>
+      <div class="nav-links">
+        <a href="index.html"     class="nav-link">Home</a>
+        <a href="upload.html"    class="nav-link">Contribute</a>
+        <a href="download.html"  class="nav-link">Explore</a>
+        <a href="reviews.html"   class="nav-link">Community</a>
+        <a href="dashboard.html" class="nav-link active">Dashboard</a>
+      </div>
+      <div class="nav-right">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></button>
+        <button class="nav-signin" id="nav-login" onclick="location.href='auth.html?next=dashboard.html'">Sign in</button>
+        <div id="nav-user" style="display:none;align-items:center;gap:0.5rem">
+          <a href="dashboard.html" class="nav-user-pill">
+            <div class="nav-avatar" id="nav-avatar">U</div>
+            <span id="nav-username" style="font-size:0.875rem;font-weight:600"></span>
+          </a>
+          <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
+        </div>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+<nav class="mobile-drawer" id="mobile-drawer">
+  <button class="mobile-drawer-close" id="drawer-close"></button>
+  <a href="index.html"     class="mobile-link">Home</a>
+  <a href="upload.html"    class="mobile-link">Contribute</a>
+  <a href="download.html"  class="mobile-link">Explore</a>
+  <a href="reviews.html"   class="mobile-link">Community</a>
+  <a href="dashboard.html" class="mobile-link active">Dashboard</a>
+</nav>
+
+<div class="page-header">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a><span class="breadcrumb-sep">›</span><span>Dashboard</span></div>
+    <h1 class="t-h1">Dashboard</h1>
+  </div>
+</div>
+
+<!-- Auth gate -->
+<div id="dash-gate" style="display:none">
+  <div class="wrap" style="padding:5rem 0;text-align:center">
+    <div style="width:52px;height:52px;border-radius:50%;background:var(--purple-dim);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:var(--purple)" id="gate-lock"></div>
+    <h3 class="t-h3" style="margin-bottom:0.5rem">Sign in to view your dashboard</h3>
+    <p class="t-small t-muted" style="margin-bottom:1.5rem">Track your uploads, downloads, and contributions.</p>
+    <a href="auth.html?mode=signin&next=dashboard.html" class="btn btn-solid">Sign in</a>
+  </div>
+</div>
+
+<!-- Dashboard content -->
+<div id="dash-content" style="display:none">
+  <main class="wrap page-body">
+    <!-- User card -->
+    <div class="user-card anim-fade-up">
+      <div class="user-card-avatar" id="dash-avatar">U</div>
+      <div>
+        <div class="t-h3" id="dash-username">—</div>
+        <div class="t-small t-muted" id="dash-email">—</div>
+        <span class="badge badge-purple" id="dash-role" style="margin-top:0.35rem">Student</span>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:0.5rem;flex-wrap:wrap">
+        <a href="upload.html" class="btn btn-lime btn-sm">Contribute notes</a>
+        <button onclick="logout()" class="btn btn-outline btn-sm">Sign out</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid anim-fade-up" style="animation-delay:0.1s">
+      <div class="stat-card">
+        <div class="stat-val t-purple" id="s-uploads">—</div>
+        <div class="stat-lbl">Notes uploaded</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="s-dls">—</div>
+        <div class="stat-lbl">Downloads made</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val t-lime" id="s-views">—</div>
+        <div class="stat-lbl">Times my notes downloaded</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="s-since">—</div>
+        <div class="stat-lbl">Member since</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="dash-tabs anim-fade-up" style="animation-delay:0.15s">
+      <button class="dash-tab active" id="dt-uploads" onclick="switchDashTab('uploads')">Uploads</button>
+      <button class="dash-tab" id="dt-downloads" onclick="switchDashTab('downloads')">Download history</button>
+    </div>
+
+    <!-- Uploads table -->
+    <div id="panel-uploads" class="data-table-wrap anim-fade-up" style="animation-delay:0.2s">
+      <table class="data-table">
+        <thead><tr><th>File</th><th>Course</th><th>Department</th><th>Sem</th><th>Downloads</th><th>Uploaded</th><th></th></tr></thead>
+        <tbody id="uploads-tbody"><tr><td colspan="7" style="text-align:center;padding:2rem"><span class="spinner" style="display:block;margin:0 auto"></span></td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- Downloads table -->
+    <div id="panel-downloads" class="data-table-wrap anim-fade-up" style="display:none">
+      <table class="data-table">
+        <thead><tr><th>File</th><th>Course</th><th>Department</th><th>Downloaded</th></tr></thead>
+        <tbody id="downloads-tbody"><tr><td colspan="4" style="text-align:center;padding:2rem"><span class="spinner" style="display:block;margin:0 auto"></span></td></tr></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- Delete confirm -->
+<div class="modal-overlay" id="del-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div><h3 class="t-h3">Delete note</h3><p class="t-small t-muted">This cannot be undone.</p></div>
+      <button class="modal-close" onclick="closeModal('del-modal')" id="del-modal-close"></button>
+    </div>
+    <p class="t-small" style="margin-bottom:1.5rem">Delete <strong id="del-name">this note</strong>?</p>
+    <div style="display:flex;gap:0.75rem;justify-content:flex-end">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('del-modal')">Cancel</button>
+      <button class="btn btn-sm" id="del-confirm-btn" style="background:rgba(220,60,60,0.12);border:1px solid rgba(220,60,60,0.25);color:#C04040">Delete</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer"><div class="wrap"><div class="footer-inner">
+  <span class="footer-logo"><span class="ewu">EWU</span> <span class="notes">Notes</span><span class="hub">Hub</span></span>
+  <span class="t-small t-muted">Dashboard</span>
+</div></div></footer>
+
+<div id="toast-rack"></div>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>

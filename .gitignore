@@ -1,0 +1,6 @@
+backend/uploads/*
+!backend/uploads/README.txt
+node_modules/
+.DS_Store
+*.log
+.env
